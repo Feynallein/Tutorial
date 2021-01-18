@@ -1,6 +1,5 @@
 package Part_1;
 
-import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -9,12 +8,18 @@ import java.awt.event.MouseListener;
  * Il s'agit du controleur
  */
 public class Control {
+    public static final int DOWN = 2;
+    Affichage affichage;
+    Etat etat;
+
     /**
      * Constructeur de la classe
      * @param affichage - la vue
      * @param etat - le modele
      */
     public Control(Affichage affichage, Etat etat){
+        this.affichage = affichage;
+        this.etat = etat;
         // Ajout d'un mouse listener
         affichage.addMouseListener(new MouseListener() {
             /**
@@ -23,10 +28,11 @@ public class Control {
              */
             @Override
             public void mouseClicked(MouseEvent e) {
-                // effectuer le saut
+                // Effectuer le saut
                 etat.jump();
-                // mettre a jour la vue
-                affichage.repaint(new Rectangle(Affichage.x, etat.getHauteur(), Affichage.ovalWidth+1, Affichage.ovalHeight*2));
+
+                // Mettre a jour la vue
+                affichage.repaint();
             }
             @Override
             public void mousePressed(MouseEvent e) { }
@@ -37,5 +43,12 @@ public class Control {
             @Override
             public void mouseExited(MouseEvent e) { }
         });
+    }
+
+    public void moveDown(){
+        if(etat.hauteur + DOWN  + Affichage.OVAL_HEIGHT <= Affichage.HEIGHT) {
+            etat.hauteur += DOWN ;
+            affichage.repaint();
+        }
     }
 }
