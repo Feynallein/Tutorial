@@ -5,20 +5,47 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * Classe affichage
  * Permet d'afficher les differentes composantes a l'ecran en fonction de l'etat
  */
 public class Affichage extends JPanel {
     /**
-     * Constantes : width = largeur, height = hauteur, ovalHeight = hauteur de l'oval, ovalWidth = largeur de l'oval, x = coordonee x de départ de l'oval
-     *              y = coordonee y de départ de l'oval
+     * Constante : Largeur de la fenetre
      */
-    public final static int WIDTH = 600, HEIGHT = 400, OVAL_HEIGHT = 70, OVAL_WIDTH = 10, X = 10, Y = (HEIGHT-OVAL_HEIGHT)/2;
+    public final static int WIDTH = 600;
+
+    /**
+     * Constante : Hauteur de la fenetre
+     */
+    public final static int HEIGHT = 400;
+
+    /**
+     * Constante : Hauteur de l'ovale
+     */
+    public final static int OVAL_HEIGHT = 70;
+
+    /**
+     * Constante : Largeur de l'ovale
+     */
+    public final static int OVAL_WIDTH = 10;
+
+    /**
+     * Constante : Coordonnee x d'origine de l'ovale
+     */
+    public final static int X = WIDTH/2;
+
+    /**
+     * Constante : Coordonnee y d'origine de l'ovale
+     */
+    public final static int Y = HEIGHT/2;
+
+    /**
+     * Modele de cette vue
+     */
     private final Etat etat;
 
     /**
      * Constructeur de l'affichage
-     * @param etat - Il s'agit du modele
+     * @param etat Il s'agit du modele
      */
     public Affichage(Etat etat){
         // Defini la taille de ce JPanel
@@ -27,8 +54,8 @@ public class Affichage extends JPanel {
     }
 
     /**
-     * Affichage
-     * @param g - Graphics sur lequel on doit afficher ce JPanel
+     * Affiche les differentes composantes a l'ecran
+     * @param g Graphics sur lequel on doit afficher ce JPanel
      */
     @Override
     public void paint(Graphics g) {

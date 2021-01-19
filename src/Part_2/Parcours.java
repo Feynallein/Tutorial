@@ -6,23 +6,59 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Permet de creer la ligne brisee et de la faire "reculer" afin de donner l'impression de defilement
+ */
 public class Parcours {
+    /**
+     * Constante : Nombre de pixel dont on avance par tick
+     */
+    public static final int AVANCER = 2;
+
+    /**
+     * Constante : Longueur maximale d'une ligne
+     */
+    public static final int MAX_LENGTH = Affichage.OVAL_WIDTH*20;
+
+    /**
+     * Constante : Longueur minimale d'une ligne
+     */
+    public static final int MIN_LENGTH = Affichage.OVAL_WIDTH*4;
+
+    /**
+     * Constante : Angle maximal entre deux lignes
+     */
+    public static final int MAX_ANGLE = 30;
+
+    /**
+     * Constante : Angle minimal entre deux lignes
+     */
+    public static final int MIN_ANGLE = 5;
+
+    /**
+     * Liste des points qui forment les lignes
+     */
     private final ArrayList<Point> points = new ArrayList<>();
-    private final Random r = new Random();
-    public static final int AVANCER = 1;
-    public static final int MAX_LENGTH = Affichage.OVAL_WIDTH*15;
-    public static final int MIN_LENGTH = Affichage.OVAL_WIDTH*3;
-    public static final float MAX_ANGLE = 90;
+
+    /**
+     * Score du joueur
+     */
     private int position;
 
+    private final Random r = new Random();
+
+    /**
+     * Constructeur de la classe Parcours
+     */
     public Parcours() {
         initParcours();
         position = 0;
     }
 
+    /**
+     * Initialise la liste de points quand le jeu se lance pour la premiere fois
+     */
     private void initParcours(){
-        int hypotenuse, max_y, min_y;
-
         // On cree le premier point au centre de l'ovale
         int x = Affichage.X + Affichage.OVAL_WIDTH/2, y = Affichage.Y + Affichage.OVAL_HEIGHT/2;
         Point p = new Point(x, y);
@@ -34,10 +70,9 @@ public class Parcours {
             x = r.nextInt((MAX_LENGTH + p.x) - (p.x + MIN_LENGTH)) + p.x + MIN_LENGTH;
 
             // Creation du nouveau point en y, en verifiant qu'on ne sort pas de la fenetre
-            hypotenuse = (int) (Math.sin(MAX_ANGLE) * x);
-            max_y = Math.min(p.y + hypotenuse, Affichage.HEIGHT - Affichage.OVAL_HEIGHT);
-            min_y = Math.max(p.y - hypotenuse, Affichage.OVAL_HEIGHT);
-            y = r.nextInt(max_y - min_y) + min_y;
+            do {
+                y = (int) (Math.sin(r.nextInt(MAX_ANGLE - MIN_ANGLE) + MIN_ANGLE) * x) * (r.nextInt(2) == 0 ? 1 : -1);
+            }while(y < Affichage.OVAL_HEIGHT || y > Affichage.HEIGHT - Affichage.OVAL_HEIGHT);
 
             // Creation et ajout du point a la liste
             p = new Point(x, y);
@@ -45,22 +80,32 @@ public class Parcours {
         }
     }
 
-    private void add(int x, int y){
+    /**
+     * Permet de rajouter des points quand il n'y en a plus assez
+     * @param x Coordonnee x du dernier point
+     */
+    private void add(int x){
         // Calcul de la coordonnee x
         int newX = r.nextInt((MAX_LENGTH + x) - (x + MIN_LENGTH)) + x + MIN_LENGTH;
 
-        // Calcul de la coordonnee y
-        int hypotenuse = (int) (Math.sin(MAX_ANGLE) * x);
-        int max_y = Math.min(y + hypotenuse, Affichage.HEIGHT - Affichage.OVAL_HEIGHT);
-        int min_y = Math.max(y - hypotenuse, Affichage.OVAL_HEIGHT);
-        int newY = r.nextInt(max_y - min_y) + min_y;
+        // Calcul de la coordonnee y et verification qu'on ne sort pas de la fenetre
+        int newY;
+
+        do {
+            newY = (int) (Math.sin(r.nextInt(MAX_ANGLE)) * newX) * (r.nextInt(2) == 0 ? 1 : -1);
+        }while(newY < Affichage.OVAL_HEIGHT || newY > Affichage.HEIGHT - Affichage.OVAL_HEIGHT);
 
         // Ajout du nouveau point
         points.add(new Point(newX, newY));
     }
 
+    /**
+     * Change la position de tout les points et supprimment ceux qu'on ne voit plus.
+     * Gere aussi quand il faut ajouter un nouveau point
+     * @return Une liste contenant tout les points a afficher
+     */
     public ArrayList<Point> getPoints() {
-        if(points.get(points.size() - 2).x < Affichage.WIDTH) add(points.get((points.size() - 1)).x, points.get((points.size() - 1)).y);
+        if(points.get(points.size() - 2).x < Affichage.WIDTH) add(points.get((points.size() - 1)).x);
         if(points.get(2).x <= 1) points.remove(0);
         ArrayList<Point> res = new ArrayList<>();
         for(Point p : points){
@@ -70,6 +115,9 @@ public class Parcours {
         return res;
     }
 
+    /**
+     * Increment de la position a chaque tick
+     */
     public void setPosition() {
         this.position += AVANCER;
     }

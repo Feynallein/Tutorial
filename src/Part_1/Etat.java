@@ -4,14 +4,23 @@ import Part_2.Avancer;
 import Part_2.Parcours;
 
 /**
- * Class etat
  * Il s'agit du modele
  */
 public class Etat {
+    /**
+     * Constante : Taille du saut de l'ovale
+     */
+    public static final int JUMP_HEIGHT = Affichage.OVAL_HEIGHT/2;
+
+    /**
+     * Coordonnee selon y de l'ovale a un instant T
+     */
     public int hauteur;
-    public static final int JUMP_HEIGHT = 30;
+
+    /**
+     * La ligne brisee
+     */
     public Parcours parcours;
-    public Avancer avancer;
 
     /**
      * Constructeur de la classe
@@ -31,7 +40,7 @@ public class Etat {
 
     /**
      * Getter de hauteur
-     * @return - renvoit la hauteur
+     * @return Renvoit la hauteur
      */
     public int getHauteur(){
         return hauteur;

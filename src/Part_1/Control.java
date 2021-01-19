@@ -4,18 +4,28 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 /**
- * Class Control
  * Il s'agit du controleur
  */
 public class Control {
-    public static final int DOWN = 2;
-    Affichage affichage;
-    Etat etat;
+    /**
+     * Constante : Vitesse a laquelle l'ovale descend
+     */
+    public static final int DOWN = 3;
+
+    /**
+     * La vue de ce controleur
+     */
+    private Affichage affichage;
+
+    /**
+     * Le modele de ce controleur
+     */
+    private Etat etat;
 
     /**
      * Constructeur de la classe
-     * @param affichage - la vue
-     * @param etat - le modele
+     * @param affichage La vue
+     * @param etat Le modele
      */
     public Control(Affichage affichage, Etat etat){
         this.affichage = affichage;
@@ -24,7 +34,7 @@ public class Control {
         affichage.addMouseListener(new MouseListener() {
             /**
              * Quand on clic sur la souris
-             * @param e - le type de mouse event
+             * @param e Le type de mouse event
              */
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -45,6 +55,9 @@ public class Control {
         });
     }
 
+    /**
+     * Permet de faire descendre l'ovale
+     */
     public void moveDown(){
         if(etat.hauteur + DOWN  + Affichage.OVAL_HEIGHT <= Affichage.HEIGHT) {
             etat.hauteur += DOWN ;
