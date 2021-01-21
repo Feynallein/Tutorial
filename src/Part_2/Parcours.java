@@ -28,12 +28,7 @@ public class Parcours {
     /**
      * Constante : Angle maximal entre deux lignes
      */
-    public static final int MAX_ANGLE = 30;
-
-    /**
-     * Constante : Angle minimal entre deux lignes
-     */
-    public static final int MIN_ANGLE = 5;
+    public static final int MAX_ANGLE = 45;
 
     /**
      * Liste des points qui forment les lignes
@@ -70,9 +65,7 @@ public class Parcours {
             x = r.nextInt((MAX_LENGTH + p.x) - (p.x + MIN_LENGTH)) + p.x + MIN_LENGTH;
 
             // Creation du nouveau point en y, en verifiant qu'on ne sort pas de la fenetre
-            do {
-                y = (int) (Math.sin(r.nextInt(MAX_ANGLE - MIN_ANGLE) + MIN_ANGLE) * x) * (r.nextInt(2) == 0 ? 1 : -1);
-            }while(y < Affichage.OVAL_HEIGHT || y > Affichage.HEIGHT - Affichage.OVAL_HEIGHT);
+            y = createNewY(x, p.x, p.y);
 
             // Creation et ajout du point a la liste
             p = new Point(x, y);
@@ -81,19 +74,37 @@ public class Parcours {
     }
 
     /**
+     * Permet de créer un nouveau Y
+     * @param x La nouvelle coordonnée x
+     * @param oldX L'ancienne coordonnée x
+     * @param oldY L'ancienne coordonnée y
+     * @return la nouvelle coordonnée y
+     */
+    private int createNewY(int x, int oldX, int oldY) {
+        int y;
+        do{
+            int hypotenuse = Math.abs(x - oldX);
+            double sinus = Math.sin(r.nextInt(MAX_ANGLE));
+            int hauteur = (int) (hypotenuse * sinus);
+            if (r.nextInt(2) == 0) {
+                hauteur *= -1;
+            }
+            y = Math.abs(hauteur + oldY);
+        }while((y < Affichage.OVAL_HEIGHT || y > Affichage.HEIGHT - Affichage.OVAL_HEIGHT));
+        return y;
+    }
+
+    /**
      * Permet de rajouter des points quand il n'y en a plus assez
      * @param x Coordonnee x du dernier point
+     * @param y Coordonnee y du dernier point
      */
-    private void add(int x){
+    private void add(int x, int y){
         // Calcul de la coordonnee x
         int newX = r.nextInt((MAX_LENGTH + x) - (x + MIN_LENGTH)) + x + MIN_LENGTH;
 
         // Calcul de la coordonnee y et verification qu'on ne sort pas de la fenetre
-        int newY;
-
-        do {
-            newY = (int) (Math.sin(r.nextInt(MAX_ANGLE)) * newX) * (r.nextInt(2) == 0 ? 1 : -1);
-        }while(newY < Affichage.OVAL_HEIGHT || newY > Affichage.HEIGHT - Affichage.OVAL_HEIGHT);
+        int newY = createNewY(x, newX, y);
 
         // Ajout du nouveau point
         points.add(new Point(newX, newY));
@@ -105,7 +116,7 @@ public class Parcours {
      * @return Une liste contenant tout les points a afficher
      */
     public ArrayList<Point> getPoints() {
-        if(points.get(points.size() - 2).x < Affichage.WIDTH) add(points.get((points.size() - 1)).x);
+        if(points.get(points.size() - 2).x < Affichage.WIDTH) add(points.get((points.size() - 1)).x, points.get((points.size() -1)).y);
         if(points.get(2).x <= 1) points.remove(0);
         ArrayList<Point> res = new ArrayList<>();
         for(Point p : points){
