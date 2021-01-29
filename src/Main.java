@@ -1,5 +1,3 @@
-import Part_2.Voler;
-
 /**
  * Sert a lancer le programme
  */

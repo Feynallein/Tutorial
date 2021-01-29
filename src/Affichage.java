@@ -1,5 +1,3 @@
-package Part_1;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -66,10 +64,15 @@ public class Affichage extends JPanel {
         g.drawOval(X, etat.getHauteur(), OVAL_WIDTH, OVAL_HEIGHT);
 
         // Afficher la ligne brisee
-        ArrayList<Point> ligne = etat.parcours.getPoints();
+        ArrayList<Point> ligne = etat.parcours.getParcours();
         for(int i = 0; i < ligne.size() - 1; i++){
             g.setColor(Color.RED);
             g.drawLine(ligne.get(i).x, ligne.get(i).y, ligne.get(i+1).x, ligne.get(i+1).y);
         }
+
+        // Affichage du score
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Monospaced", Font.PLAIN, 50));
+        g.drawString("Score : " + etat.parcours.getScore(), 50, 50);
     }
 }

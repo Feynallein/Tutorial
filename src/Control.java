@@ -1,5 +1,3 @@
-package Part_1;
-
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -15,12 +13,12 @@ public class Control {
     /**
      * La vue de ce controleur
      */
-    private Affichage affichage;
+    private final Affichage affichage;
 
     /**
      * Le modele de ce controleur
      */
-    private Etat etat;
+    private final Etat etat;
 
     /**
      * Constructeur de la classe
@@ -38,11 +36,13 @@ public class Control {
              */
             @Override
             public void mouseClicked(MouseEvent e) {
-                // Effectuer le saut
-                etat.jump();
+                if(etat.testPerdu()) {
+                    // Effectuer le saut
+                    etat.jump();
 
-                // Mettre a jour la vue
-                affichage.repaint();
+                    // Mettre a jour la vue
+                    affichage.repaint();
+                }
             }
             @Override
             public void mousePressed(MouseEvent e) { }

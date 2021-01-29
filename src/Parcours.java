@@ -1,7 +1,3 @@
-package Part_2;
-
-import Part_1.Affichage;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
@@ -38,7 +34,7 @@ public class Parcours {
     /**
      * Score du joueur
      */
-    private int position;
+    public int position;
 
     private final Random r = new Random();
 
@@ -55,10 +51,11 @@ public class Parcours {
      */
     private void initParcours(){
         // On cree le premier point au centre de l'ovale
-        int x = Affichage.X + Affichage.OVAL_WIDTH/2, y = Affichage.Y + Affichage.OVAL_HEIGHT/2;
+        int x = Affichage.X + Affichage.OVAL_WIDTH/2, y = Affichage.Y + Affichage.OVAL_HEIGHT;
         Point p = new Point(x, y);
         points.add(p);
-
+        p = new Point(p.x + MAX_LENGTH, p.y);
+        points.add(p);
         // Tant qu'on ne sort pas du cadre
         while(x <= Affichage.WIDTH){
             // Creation du nouveau point en x
@@ -85,10 +82,7 @@ public class Parcours {
         do{
             int hypotenuse = Math.abs(x - oldX);
             double sinus = Math.sin(r.nextInt(MAX_ANGLE));
-            int hauteur = (int) (hypotenuse * sinus);
-            if (r.nextInt(2) == 0) {
-                hauteur *= -1;
-            }
+            int hauteur = (int) (hypotenuse * sinus) * (r.nextInt(2) == 0 ? -1 : 1);
             y = Math.abs(hauteur + oldY);
         }while((y < Affichage.OVAL_HEIGHT || y > Affichage.HEIGHT - Affichage.OVAL_HEIGHT));
         return y;
@@ -115,12 +109,12 @@ public class Parcours {
      * Gere aussi quand il faut ajouter un nouveau point
      * @return Une liste contenant tout les points a afficher
      */
-    public ArrayList<Point> getPoints() {
+    public ArrayList<Point> getParcours() {
+        ArrayList<Point> res = new ArrayList<>();
         if(points.get(points.size() - 2).x < Affichage.WIDTH) add(points.get((points.size() - 1)).x, points.get((points.size() -1)).y);
         if(points.get(2).x <= 1) points.remove(0);
-        ArrayList<Point> res = new ArrayList<>();
         for(Point p : points){
-            p.x -= position;
+            p.x -= AVANCER;
             res.add(p);
         }
         return res;
@@ -130,6 +124,14 @@ public class Parcours {
      * Increment de la position a chaque tick
      */
     public void setPosition() {
-        this.position += AVANCER;
+        position += AVANCER;
+    }
+
+    /**
+     * Getter du score
+     * @return le score du joueur
+     */
+    public int getScore(){
+        return position/2;
     }
 }

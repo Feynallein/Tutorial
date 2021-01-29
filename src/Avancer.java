@@ -1,4 +1,4 @@
-package Part_2;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Permet de faire defiler la ligne brisee
@@ -14,7 +14,14 @@ public class Avancer extends Thread {
      */
     @Override
     public void run() {
-        parcours.setPosition();
+        while(true) {
+            parcours.setPosition();
+            try {
+                TimeUnit.MILLISECONDS.sleep(Voler.SPEED);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
