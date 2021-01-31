@@ -10,11 +10,16 @@ public class Avancer extends Thread {
     private final Parcours parcours;
 
     /**
+     * Savoir si on stop
+     */
+    private boolean stop = false;
+
+    /**
      * Fait defiler la ligne brisee
      */
     @Override
     public void run() {
-        while(true) {
+        while(!stop) {
             parcours.setPosition();
             try {
                 TimeUnit.MILLISECONDS.sleep(Voler.SPEED);
@@ -22,6 +27,13 @@ public class Avancer extends Thread {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Stop le thread
+     */
+    public void stopped(){
+        stop = true;
     }
 
     /**

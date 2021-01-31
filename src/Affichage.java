@@ -69,10 +69,5 @@ public class Affichage extends JPanel {
             g.setColor(Color.RED);
             g.drawLine(ligne.get(i).x, ligne.get(i).y, ligne.get(i+1).x, ligne.get(i+1).y);
         }
-
-        // Affichage du score
-        g.setColor(Color.BLACK);
-        g.setFont(new Font("Monospaced", Font.PLAIN, 50));
-        g.drawString("Score : " + etat.parcours.getScore(), 50, 50);
     }
 }

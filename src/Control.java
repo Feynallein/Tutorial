@@ -21,6 +21,11 @@ public class Control {
     private final Etat etat;
 
     /**
+     * Savoir si on a perdu ou non
+     */
+    public boolean perdu = false;
+
+    /**
      * Constructeur de la classe
      * @param affichage La vue
      * @param etat Le modele
@@ -36,7 +41,9 @@ public class Control {
              */
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(etat.testPerdu()) {
+                // On verifie a chaque clique que l'anneau n'est pas hors de la ligne
+                if(etat.testPerdu()) perdu = true;
+                else {
                     // Effectuer le saut
                     etat.jump();
 
@@ -59,7 +66,8 @@ public class Control {
      * Permet de faire descendre l'ovale
      */
     public void moveDown(){
-        if(etat.hauteur + DOWN  + Affichage.OVAL_HEIGHT <= Affichage.HEIGHT) {
+        if(etat.testPerdu()) perdu = true;
+        else if(etat.hauteur + DOWN  + Affichage.OVAL_HEIGHT <= Affichage.HEIGHT) {
             etat.hauteur += DOWN ;
             affichage.repaint();
         }

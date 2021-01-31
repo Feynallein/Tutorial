@@ -35,13 +35,15 @@ public class Voler implements Runnable {
      */
     @Override
     public void run(){
+        // On laisse un peu de temps au jour pour qu'il voit la ligne
         try {
             TimeUnit.MILLISECONDS.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         // Boucle du jeu
-        while(modele.testPerdu()){
+        while(!controleur.perdu){
             controleur.moveDown();
             try {
                 TimeUnit.MILLISECONDS.sleep(SPEED);
@@ -56,6 +58,7 @@ public class Voler implements Runnable {
      * Est appellée quand le joueur a perdu
      */
     private void lose(){
+        modele.avancer.stopped();
         // Creation du pop-up
         JOptionPane.showMessageDialog(display, "Perdu!\nScore : " + modele.parcours.getScore(), "Fin de jeu", JOptionPane.ERROR_MESSAGE);
         // Quitter

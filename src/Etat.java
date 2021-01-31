@@ -20,6 +20,10 @@ public class Etat {
      */
     public Parcours parcours;
 
+    /**
+     * Le score
+     */
+    public final Avancer avancer;
 
     /**
      * Constructeur de la classe
@@ -27,7 +31,8 @@ public class Etat {
     public Etat(){
         this.hauteur = Affichage.Y;
         this.parcours = new Parcours();
-        (new Avancer(this.parcours)).start();
+        avancer = new Avancer(this.parcours);
+        avancer.start();
     }
 
     /**
@@ -67,7 +72,7 @@ public class Etat {
         int y = (int) (ordo_origine + coef * Affichage.X);
 
         // On renvoit vrai si le joueur N'A PAS perdu
-        return hauteur <= y && hauteur + Affichage.OVAL_HEIGHT >= y;
+        return hauteur > y || hauteur + Affichage.OVAL_HEIGHT < y;
     }
 
     /**
